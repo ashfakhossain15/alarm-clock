@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Clock from "./components/clock/clock";
 
 interface AlarmClockProps {
   // Add any props you might need for AlarmClock
@@ -26,14 +27,7 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
           />
         </div>
         <div className="clock flex items-center justify-center h-7 my-12 text-4xl">
-          <h1 className="flex gap-3">
-            <span>00</span>
-            <span>:</span>
-            <span>00</span>
-            <span>:</span>
-            <span>00</span>
-            <span>AM </span>
-          </h1>
+          <Clock />
         </div>
         <h1 className="font-bold">Set your custom alarm</h1>
         <main className="grid grid-cols-3 items-center justify-around text-center gap-7 ">
