@@ -1,19 +1,41 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Clock from "./components/clock/clock";
+import { useClock } from "./hooks/useClock";
 
 interface AlarmClockProps {
   // Add any props you might need for AlarmClock
 }
 
 const AlarmClock: React.FC<AlarmClockProps> = () => {
-  const hours = Array.from({ length: 12 }, (_, index) => index + 1);
-  const minutes = Array.from({ length: 61 }, (_, index) => index);
+  const { time: clock } = useClock();
+
+  const [hour, setHour] = useState(1);
+  const [minute, setMinute] = useState(0);
+  const [aMpM, setAMPM] = useState("AM");
+  const [time, setTime] = useState<string | undefined>();
+  const hours: any = Array.from({ length: 12 }, (_, index) => index + 1);
+  const minutes = Array.from({ length: 60 }, (_, index) => index);
   const AMPM = ["AM", "PM"];
 
-  const handleSetAlarm = (): any => {
-    console.log("setAlarm");
-  };
+  useEffect(() => {
+    setTime(
+      () =>
+        `${hour.toString().padStart(2, "0")}:${minute
+          .toString()
+          .padStart(2, "0")}:00${aMpM}`
+    );
+  }, [hour, minute, aMpM]);
+
+  useEffect(() => {
+    let clk = clock.split(" ").join("");
+    console.log(clk, time);
+    if (clk === time) {
+      return console.log(true);
+    }
+  }, [clock, time]);
 
   return (
     <div className="h-[100vh] flex justify-center items-center text-center ">
@@ -24,6 +46,7 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
             width={230}
             height={180}
             alt="Alarm Clock"
+            property="Clock"
           />
         </div>
         <div className="clock flex items-center justify-center h-7 my-12 text-4xl">
@@ -32,10 +55,13 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
         <h1 className="font-bold">Set your custom alarm</h1>
         <main className="grid grid-cols-3 items-center justify-around text-center gap-7 ">
           <div className="flex w-full border border-sky-300 rounded-lg p-2">
-            <h4>Hour :</h4>
+            <label htmlFor="hour">Hour :</label>
             <select
+              id="hour"
               title="hourSelect"
               className="outline-0 mx-auto bg-transparent "
+              value={hour}
+              onChange={(e) => setHour(Number(e.target.value))}
             >
               {hours.map((hour) => (
                 <option key={hour} value={hour}>
@@ -48,7 +74,9 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
             <h4>Minute :</h4>
             <select
               title="minuteSelect"
+              value={minute}
               className="outline-0 mx-auto bg-transparent"
+              onChange={(e) => setMinute(Number(e.target.value))}
             >
               {minutes.map((minute) => (
                 <option key={minute} value={minute}>
@@ -62,6 +90,8 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
               title="Select"
               className="outline-0 mx-auto bg-transparent"
               id="hourSelect"
+              value={aMpM}
+              onChange={(e) => setAMPM(e.target.value)}
             >
               {AMPM.map((m: any) => (
                 <option key={m} value={m}>
@@ -74,9 +104,10 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
 
         <div>
           <button
+            type="button"
             title="setAlarm"
             className="bg-blue-500 text-white font-bold text-lg rounded-lg px-8 py-3"
-            onClick={handleSetAlarm()}
+            // onClick={handleSetAlarm}
           >
             Set Alarm
           </button>
