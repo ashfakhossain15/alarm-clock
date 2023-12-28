@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Clock from "./components/clock/clock";
 import { useClock } from "./hooks/useClock";
+import toast from "react-hot-toast";
 
 interface AlarmClockProps {
   // Add any props you might need for AlarmClock
@@ -12,11 +13,11 @@ interface AlarmClockProps {
 const AlarmClock: React.FC<AlarmClockProps> = () => {
   const { time: clock } = useClock();
 
-  const [hour, setHour] = useState(1);
+  const [hour, setHour] = useState(0);
   const [minute, setMinute] = useState(0);
   const [aMpM, setAMPM] = useState("AM");
   const [time, setTime] = useState<string | undefined>();
-  const hours: any = Array.from({ length: 12 }, (_, index) => index + 1);
+  const hours: any = Array.from({ length: 13 }, (_, index) => index);
   const minutes = Array.from({ length: 60 }, (_, index) => index);
   const AMPM = ["AM", "PM"];
 
@@ -36,6 +37,14 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
       return console.log(true);
     }
   }, [clock, time]);
+
+  const handleSetAlarm = () => {
+    if (time === "00:00:00AM") {
+      toast.error("This is an error!");
+    } else {
+      toast.success("alarm updated");
+    }
+  };
 
   return (
     <div className="h-[100vh] flex justify-center items-center text-center ">
@@ -63,7 +72,7 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
               value={hour}
               onChange={(e) => setHour(Number(e.target.value))}
             >
-              {hours.map((hour) => (
+              {hours.map((hour: any) => (
                 <option key={hour} value={hour}>
                   {hour}
                 </option>
@@ -107,7 +116,7 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
             type="button"
             title="setAlarm"
             className="bg-blue-500 text-white font-bold text-lg rounded-lg px-8 py-3"
-            // onClick={handleSetAlarm}
+            onClick={handleSetAlarm}
           >
             Set Alarm
           </button>
