@@ -40,10 +40,17 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
 
   const handleSetAlarm = () => {
     if (time === "00:00:00AM") {
-      toast.error("This is an error!");
+      toast.error("Set Your alarm !");
     } else {
-      toast.success("alarm updated");
+      toast.success("Alarm is set!");
     }
+  };
+  const resetAlarm = () => {
+    setHour(0);
+    setAMPM("AM");
+    setMinute(0);
+
+    toast.success("Alarm time reset!");
   };
 
   return (
@@ -119,6 +126,14 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
             onClick={handleSetAlarm}
           >
             Set Alarm
+          </button>
+          <button
+            type="button"
+            title="setAlarm"
+            className="bg-blue-500 text-white font-bold text-lg rounded-lg px-8 py-3"
+            onClick={resetAlarm}
+          >
+            reset Alarm
           </button>
         </div>
       </section>
