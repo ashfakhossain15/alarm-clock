@@ -46,11 +46,15 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
     }
   };
   const resetAlarm = () => {
-    setHour(0);
-    setAMPM("AM");
-    setMinute(0);
+    if (time === "00:00:00AM") {
+      toast.error("Alarm already reset!");
+    } else {
+      setHour(0);
+      setAMPM("AM");
+      setMinute(0);
 
-    toast.success("Alarm time reset!");
+      toast.success("Alarm time reset!");
+    }
   };
 
   return (
