@@ -21,6 +21,28 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
   const minutes = Array.from({ length: 60 }, (_, index) => index);
   const AMPM = ["AM", "PM"];
 
+  const ringtone = new Audio("/Real-Alarm-Beeps.mp3");
+
+  class Alarm {
+    private ringtone: HTMLAudioElement;
+
+    constructor(soundFilePath: string) {
+      this.ringtone = new Audio(soundFilePath);
+    }
+
+    play() {
+      this.ringtone.play();
+    }
+
+    stop() {
+      this.ringtone.pause();
+      this.ringtone.currentTime = 0;
+    }
+
+    sleep(seconds: number) {
+      return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+    }
+  }
   useEffect(() => {
     setTime(
       () =>
@@ -34,9 +56,11 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
     let clk = clock.split(" ").join("");
     console.log(clk, time);
     if (clk === time) {
-      return console.log(true);
+      ringtone.play();
+      ringtone.loop();
+      ringtone.sleep(60);
     }
-  }, [clock, time]);
+  }, [clock, time, ringtone]);
 
   const handleSetAlarm = () => {
     if (time === "00:00:00AM") {
@@ -108,7 +132,7 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
           <div className="flex w-full border border-sky-300 rounded-lg p-2">
             <select
               title="Select"
-              className="outline-0 mx-auto bg-transparent"
+              className="outline-0 mx-auto bg-transparent "
               id="hourSelect"
               value={aMpM}
               onChange={(e) => setAMPM(e.target.value)}
@@ -140,6 +164,8 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
             reset Alarm
           </button>
         </div>
+
+        <div></div>
       </section>
     </div>
   );
