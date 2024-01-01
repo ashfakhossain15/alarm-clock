@@ -42,13 +42,13 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
     const clk: string = clock.split(" ").join("");
 
     console.log(clk, time);
-    if (setAlarm) {
+    if (setAlarm === true) {
       if (clk === time) {
         ringtone.startAlarm(1);
         console.log(true, setAlarm);
       }
     } else return;
-  }, [clock, time, setAlarm]);
+  }, [clock, time, setAlarm, ringtone]);
 
   const handleSetAlarm = () => {
     if (time === "00:00:00AM") {
@@ -66,6 +66,7 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
       setHour(0);
       setAMPM("AM");
       setMinute(0);
+      ringtone.stop();
       setSetAlarm(false);
       toast.success("Alarm time reset!");
     }
