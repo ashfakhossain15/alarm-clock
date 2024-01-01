@@ -24,6 +24,5 @@ export class Alarm {
     await this.sleep(min); // Sleep for 60 seconds (1 minute)
     this.ringtone.pause();
     this.ringtone.loop = false;
-    this.ringtone.stop();
   }
 }
