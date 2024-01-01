@@ -5,7 +5,7 @@ import Image from "next/image";
 import Clock from "./components/clock/clock";
 import { useClock } from "./hooks/useClock";
 import toast from "react-hot-toast";
-import { ringtone } from "./utils/ringtone";
+import { Alarm } from "./utils/ringtone";
 
 interface AlarmClockProps {
   // Add any props you might need for AlarmClock
@@ -22,6 +22,12 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
   const minutes = Array.from({ length: 60 }, (_, index) => index);
   const AMPM = ["AM", "PM"];
   const [setAlarm, setSetAlarm] = useState(false);
+  const [audioFile, setAudioFile] = useState<HTMLAudioElement | null>(null);
+  const ringtone = new Alarm(audioFile);
+
+  useEffect(() => {
+    setAudioFile(new Audio("/Real-Alarm-Beeps.mp3"));
+  }, []);
 
   useEffect(() => {
     setTime(
@@ -33,21 +39,24 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
   }, [hour, minute, aMpM]);
 
   useEffect(() => {
-    const clk = clock.split(" ").join("");
-    
-    if (setAlarm && clk === time) {
-      console.log(clk, time);
-      ringtone.startAlarm(1);
-    }
+    const clk: string = clock.split(" ").join("");
+
+    console.log(clk, time);
+    if (setAlarm) {
+      if (clk === time) {
+        ringtone.startAlarm(1);
+        console.log(true, setAlarm);
+      }
+    } else return;
   }, [clock, time, setAlarm]);
 
   const handleSetAlarm = () => {
     if (time === "00:00:00AM") {
       toast.error("Set Your alarm !");
-      setSetAlarm(true);
     } else {
       toast.success("Alarm is set!");
     }
+    setSetAlarm(true);
   };
 
   const resetAlarm = () => {
@@ -145,8 +154,6 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
             reset Alarm
           </button>
         </div>
-
-        <div></div>
       </section>
     </div>
   );

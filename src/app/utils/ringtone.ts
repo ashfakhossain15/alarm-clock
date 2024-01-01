@@ -1,14 +1,18 @@
-const audio: any = "/Real-Alarm-Beeps.mp3";
-class Alarm {
-  private ringtone: HTMLAudioElement;
+export class Alarm {
+  private ringtone: HTMLAudioElement | any;
 
-  constructor() {
+  constructor(audio: HTMLAudioElement | null) {
     this.ringtone = audio;
   }
 
   play() {
     this.ringtone.play();
     this.ringtone.loop = true;
+  }
+  stop() {
+    this.ringtone.pause();
+    this.ringtone.currentTime = 0;
+    this.ringtone.loop = false;
   }
 
   sleep(seconds: number) {
@@ -20,7 +24,6 @@ class Alarm {
     await this.sleep(min); // Sleep for 60 seconds (1 minute)
     this.ringtone.pause();
     this.ringtone.loop = false;
+    this.ringtone.stop();
   }
 }
-
-export const ringtone = new Alarm();
