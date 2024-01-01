@@ -1,5 +1,4 @@
 const audio: any = "/Real-Alarm-Beeps.mp3";
-
 class Alarm {
   private ringtone: HTMLAudioElement;
 
