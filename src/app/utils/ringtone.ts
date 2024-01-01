@@ -1,8 +1,10 @@
+const audio: any = "/Real-Alarm-Beeps.mp3";
+
 class Alarm {
   private ringtone: HTMLAudioElement;
 
   constructor() {
-    this.ringtone = new Audio("/Real-Alarm-Beeps.mp3");
+    this.ringtone = audio;
   }
 
   play() {
