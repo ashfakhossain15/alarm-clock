@@ -5,6 +5,7 @@ import Image from "next/image";
 import Clock from "./components/clock/clock";
 import { useClock } from "./hooks/useClock";
 import toast from "react-hot-toast";
+import { ringtone } from "./utils/ringtone";
 
 interface AlarmClockProps {
   // Add any props you might need for AlarmClock
@@ -20,29 +21,8 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
   const hours: any = Array.from({ length: 13 }, (_, index) => index);
   const minutes = Array.from({ length: 60 }, (_, index) => index);
   const AMPM = ["AM", "PM"];
+  const [setAlarm, setSetAlarm] = useState(false);
 
-  const ringtone = new Audio("/Real-Alarm-Beeps.mp3");
-
-  class Alarm {
-    private ringtone: HTMLAudioElement;
-
-    constructor(soundFilePath: string) {
-      this.ringtone = new Audio(soundFilePath);
-    }
-
-    play() {
-      this.ringtone.play();
-    }
-
-    stop() {
-      this.ringtone.pause();
-      this.ringtone.currentTime = 0;
-    }
-
-    sleep(seconds: number) {
-      return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
-    }
-  }
   useEffect(() => {
     setTime(
       () =>
@@ -53,22 +33,23 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
   }, [hour, minute, aMpM]);
 
   useEffect(() => {
-    let clk = clock.split(" ").join("");
-    console.log(clk, time);
-    if (clk === time) {
-      ringtone.play();
-      ringtone.loop();
-      ringtone.sleep(60);
+    const clk = clock.split(" ").join("");
+    
+    if (setAlarm && clk === time) {
+      console.log(clk, time);
+      ringtone.startAlarm(1);
     }
-  }, [clock, time, ringtone]);
+  }, [clock, time, setAlarm]);
 
   const handleSetAlarm = () => {
     if (time === "00:00:00AM") {
       toast.error("Set Your alarm !");
+      setSetAlarm(true);
     } else {
       toast.success("Alarm is set!");
     }
   };
+
   const resetAlarm = () => {
     if (time === "00:00:00AM") {
       toast.error("Alarm already reset!");
@@ -76,7 +57,7 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
       setHour(0);
       setAMPM("AM");
       setMinute(0);
-
+      setSetAlarm(false);
       toast.success("Alarm time reset!");
     }
   };
