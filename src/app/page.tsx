@@ -68,6 +68,7 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
       setMinute(0);
       ringtone.stop();
       setSetAlarm(false);
+
       toast.success("Alarm time reset!");
     }
   };
@@ -152,7 +153,7 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
             className="bg-blue-500 text-white font-bold text-lg rounded-lg px-8 py-3"
             onClick={resetAlarm}
           >
-            reset Alarm
+            Reset Alarm
           </button>
         </div>
       </section>

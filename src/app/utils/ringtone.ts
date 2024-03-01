@@ -11,7 +11,6 @@ export class Alarm {
   }
   stop() {
     this.ringtone.pause();
-    this.ringtone.currentTime = 0;
     this.ringtone.loop = false;
   }
 
@@ -21,8 +20,9 @@ export class Alarm {
 
   async startAlarm(min: number) {
     this.play();
+    this.ringtone.loop = true;
+
     await this.sleep(min); // Sleep for 60 seconds (1 minute)
-    this.ringtone.pause();
-    this.ringtone.loop = false;
+    this.ringtone.stop();
   }
 }
