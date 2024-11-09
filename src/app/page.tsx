@@ -138,7 +138,7 @@ const AlarmClock: React.FC<AlarmClockProps> = () => {
           </div>
         </main>
 
-        <div>
+        <div className="space-x-4">
           <button
             type="button"
             title="setAlarm"
